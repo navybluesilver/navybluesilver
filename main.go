@@ -60,7 +60,7 @@ func loadArticle(title string) (*ArticlePage, error) {
 			return nil, err
 	}
 	body := markdown.ToHTML(md, nil, nil)
-	return &ArticlePage{Title: "Article", Article: template.HTML(body) }, nil
+	return &ArticlePage{Title: "", Article: template.HTML(body) }, nil
 }
 
 func articleHandler(w http.ResponseWriter, r *http.Request, title string) {

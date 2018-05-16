@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"regexp"
 	"io/ioutil"
+	"github.com/navybluesilver/lightning"
 	"github.com/gomarkdown/markdown"
 )
 
@@ -83,6 +84,7 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 }
 
 func main() {
+	getInfo()
 	http.HandleFunc("/", aboutHandler)
 	http.HandleFunc("/about", aboutHandler)
 	http.HandleFunc("/donate", donateHandler)
@@ -91,4 +93,9 @@ func main() {
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
 	log.Fatal(http.ListenAndServe(port, nil))
+}
+
+func getInfo() {
+	err := lightning.GetInfo()
+	fmt.Printf("%v",err)
 }

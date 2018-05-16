@@ -1,0 +1,19 @@
+# Setup for Travis CI http://travis-ci.org/
+language: go
+
+go:
+    - tip
+
+before_install:
+    - go get -d -t -v ./...
+
+install:
+    - go build -v ./...
+
+script:
+    - go test -race -v ./...
+    - go test -run=^$ -bench=BenchmarkReference -benchmem
+    - ./s/test_with_codecoverage.sh
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

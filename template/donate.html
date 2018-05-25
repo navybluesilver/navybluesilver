@@ -1,62 +1,72 @@
 <html>
-
 <head>
-  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
-  <title>Navy Blue Silver - {{.Title}}</title>
+    <title>Navy Blue Silver</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  <div class="collapse navbar-collapse" id="navbarColor03">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
+  <a class="navbar-brand" href="#">Navy Blue Silver</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="../about">Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="../about">About <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="../article/bitcoinbeginners">Bitcoin Beginners Guide</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../donate">Donate</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../pricing">Pricing</a>
-      </li>
-    </ul>
-</nav>
-
-<html>
-
-<head>
-  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
-  <title>Navy Blue Silver - {{.Title}}</title>
-</head>
-
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  <div class="collapse navbar-collapse" id="navbarColor03">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="../about">About<span class="sr-only">(current)</span></a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Article</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="../article/may">May Update</a>
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../article/bitcoinbeginners">Bitcoin Beginners Guide</a>
+        <a class="nav-link" href="../disclaimer">Disclaimer</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="../donate">Donate</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../pricing">Pricing</a>
-      </li>
-    </ul>
-</nav>
-
+  </div>
+  </nav>
 <main>
-</br>
-</br>
-</br>
-</br>
 <div class="container">
-  <img src="/images/address.png" /></p>
+  <h1>Donate</h1>
+  <div class="divider"></div><br/>
+  <div class="row">
+    <div class="col m6 s12">
+      <div style="min-height:500px;" class="section panel white">
+        <div class="container center">
+          <h5>Lightning Invoice</h5>
+          <p class="grey-text text-darken-1">Donate using a lightning invoice</p>
+          <div class="divider"></div>
+          <form action="/donate" method="post">
+              <p><img src={{.PaymentRequestPNG}}  alt="Lightning Invocie" width="200"/></p>
+              <p>Satoshis: <input type="number" name="satoshis"></p>
+              <p><input type="submit" value="Get Invoice"></p>
+              <p>Donating {{.Donation}} satoshis</p>
+              <p class="pcode"><strong>{{.PaymentRequest}}</strong></p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col m6 s12">
+      <div style="min-height:500px;" class="section panel white">
+        <div class="container center">
+          <h5>Bitcoin Address</h5>
+          <p class="grey-text text-darken-1">Donate using our bitcoin address.</p>
+          <div class="divider"></div>
+          <img src="/images/address.png" alt="Donation Address" width="200"/>
+          <p class="pcode"><strong>{{.DonationAddress}}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </main>
 </body>

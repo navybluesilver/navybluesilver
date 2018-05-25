@@ -7,28 +7,26 @@ import (
 	"net/http"
 	"regexp"
 	"io/ioutil"
-	"github.com/navybluesilver/lightning"
+	"strconv"
+	qrcode "github.com/skip2/go-qrcode"
 	"github.com/gomarkdown/markdown"
+	"github.com/navybluesilver/lightning"
 )
 
 const (
 	myEmail = "navybluesilver@protonmail.ch"
 	myFingerprint = "DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C"
+	myBitcoinAddress = "3BwKJ23VEsWN9j678HE2KfU6dLEJCpHdJc"
 	port  = ":80"
+	defaultDonation = 10000 //satoshis
 )
 
 var (
-	templates = template.Must(template.ParseFiles("template/about.html", "template/donate.html", "template/article.html"))
-	validPath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
+	templates = template.Must(template.ParseFiles("template/about.html", "template/donate.html", "template/article.html", "template/disclaimer.html"))
+	validArticlePath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
 )
 
-type AboutPage struct {
-	Title string
-	Email string
-	Fingerprint string
-}
-
-type DonatePage struct {
+type PricingPage struct {
 	Title string
 }
 
@@ -37,18 +35,68 @@ type ArticlePage struct {
   Article  template.HTML
 }
 
-//HTTP Handling
+type DonatePage struct {
+	Title string
+	DonationAddress string
+	PaymentRequest string
+	PaymentRequestPNG string
+	Donation int64
+}
+
+func main() {
+	//default
+	http.HandleFunc("/", aboutHandler)
+
+	//pages
+	http.HandleFunc("/about", aboutHandler)
+	http.HandleFunc("/article/", makeArticle(articleHandler))
+	http.HandleFunc("/donate", donateHandler)
+	http.HandleFunc("/disclaimer", disclaimerHandler)
+
+	//invoice
+	http.HandleFunc("/invoice/", makeInvoice(invoiceHandler))
+
+	//files
+	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
+	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
+
+	//listen
+	log.Fatal(http.ListenAndServe(port, nil))
+}
+
+//about
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
-        p := &AboutPage{Title: "About", Email: myEmail, Fingerprint: myFingerprint }
-				err := templates.ExecuteTemplate(w, "about.html", p)
+				p, err := loadArticle("about")
+				err = templates.ExecuteTemplate(w, "about.html", p)
         if err != nil {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
         }
 }
 
-func donateHandler(w http.ResponseWriter, r *http.Request) {
-        p := &DonatePage{Title: "Donate" }
-				err := templates.ExecuteTemplate(w, "donate.html", p)
+//pricing
+func pricingHandler(w http.ResponseWriter, r *http.Request) {
+        p := &PricingPage{Title: "Pricing" }
+				err := templates.ExecuteTemplate(w, "pricing.html", p)
+        if err != nil {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+        }
+}
+
+//article
+func makeArticle(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		m := validArticlePath.FindStringSubmatch(r.URL.Path)
+		if m == nil {
+			http.NotFound(w, r)
+			return
+		}
+		fn(w, r, m[2])
+	}
+}
+
+func articleHandler(w http.ResponseWriter, r *http.Request, title string) {
+				p, err := loadArticle(title)
+				err = templates.ExecuteTemplate(w, "article.html", p)
         if err != nil {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
         }
@@ -64,38 +112,69 @@ func loadArticle(title string) (*ArticlePage, error) {
 	return &ArticlePage{Title: "", Article: template.HTML(body) }, nil
 }
 
-func articleHandler(w http.ResponseWriter, r *http.Request, title string) {
-				p, err := loadArticle(title)
-				err = templates.ExecuteTemplate(w, "article.html", p)
+//donate
+func donateHandler(w http.ResponseWriter, r *http.Request) {
+				var paymentRequest string
+				var donation int64
+
+				// load a default invoice the first time
+				if r.Method == "GET" {
+					invoice, err := lightning.GetInvoice(defaultDonation, "intial")
+					if err != nil {
+							http.Error(w, err.Error(), http.StatusInternalServerError)
+					}
+					paymentRequest = invoice
+					donation = defaultDonation
+				} else {
+				// load an invoice based on the specified donation
+		        r.ParseForm()
+						satoshis, err := strconv.ParseInt(r.Form["satoshis"][0], 10, 64)
+						if err != nil {
+						    http.Error(w, err.Error(), http.StatusInternalServerError)
+						}
+						invoice, err := lightning.GetInvoice(satoshis, "new donation")
+						if err != nil {
+								http.Error(w, err.Error(), http.StatusInternalServerError)
+						}
+						paymentRequest = invoice
+						donation = satoshis
+		    }
+
+				png := fmt.Sprintf("/invoice/%s", paymentRequest)
+				p := &DonatePage{Title: "Donate", PaymentRequest: paymentRequest, DonationAddress: myBitcoinAddress, PaymentRequestPNG: png, Donation: donation }
+				err := templates.ExecuteTemplate(w, "donate.html", p)
+				if err != nil {
+								http.Error(w, err.Error(), http.StatusInternalServerError)
+				}
+}
+
+//disclaimer
+func disclaimerHandler(w http.ResponseWriter, r *http.Request) {
+				p, err := loadArticle("disclaimer")
+				err = templates.ExecuteTemplate(w, "disclaimer.html", p)
         if err != nil {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
         }
 }
 
-func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
+//invoice
+func makeInvoice(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		m := validPath.FindStringSubmatch(r.URL.Path)
-		if m == nil {
-			http.NotFound(w, r)
-			return
-		}
-		fn(w, r, m[2])
+		invoice := r.URL.Path[9:len(r.URL.Path)]
+		fn(w, r, invoice)
 	}
 }
 
-func main() {
-	getInfo()
-	http.HandleFunc("/", aboutHandler)
-	http.HandleFunc("/about", aboutHandler)
-	http.HandleFunc("/donate", donateHandler)
-	http.HandleFunc("/article/", makeHandler(articleHandler))
-	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
-	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
-	log.Fatal(http.ListenAndServe(port, nil))
-}
+func invoiceHandler(w http.ResponseWriter, r *http.Request, payment_request string) {
+	png, err := qrcode.Encode(payment_request, qrcode.Medium, 1500)
+	if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 
-func getInfo() {
-	err := lightning.GetInfo()
-	fmt.Printf("%v",err)
+	w.Header().Set("Content-Type", "image/png")
+	w.Header().Set("Content-Length", strconv.Itoa(len(png)))
+	if _, err := w.Write(png); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }

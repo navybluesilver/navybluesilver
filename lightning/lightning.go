@@ -3,30 +3,25 @@ package lightning
 import (
   "fmt"
   "log"
-  "strings"
   "path/filepath"
   "io/ioutil"
-	"os"
-	"os/user"
   "golang.org/x/net/context"
   "google.golang.org/grpc"
   "google.golang.org/grpc/credentials"
+  viper "github.com/spf13/viper"
   macaroon "gopkg.in/macaroon.v2"
   lnrpc "github.com/lightningnetwork/lnd/lnrpc"
   macaroons "github.com/lightningnetwork/lnd/macaroons"
 )
 
-const (
-	defaultTLSCertFilename  = "tls.cert"
-	defaultMacaroonFilename = "admin.macaroon"
-	defaultLndDir 					= "/root/.lnd"
-)
 
 var (
-	defaultTLSCertPath  = filepath.Join(defaultLndDir, defaultTLSCertFilename)
-	defaultMacaroonPath = filepath.Join(defaultLndDir, defaultMacaroonFilename)
-	defaultRPCServer    = "localhost:10009"
-	webApplicationPort  = ":8081"
+  defaultTLSCertFilename string
+  defaultMacaroonFilename string
+  defaultLndDir string
+  defaultRPCServer string
+	defaultTLSCertPath string
+	defaultMacaroonPath string
 )
 
 func GetInfo() (e error) {
@@ -44,6 +39,39 @@ func GetInfo() (e error) {
   return nil
 }
 
+func GetInvoice(amt int64, memo string) (string, error) {
+	client, cleanUp := getClient()
+	defer cleanUp()
+
+  invoice := &lnrpc.Invoice{
+		Memo:            memo,
+		Value:           amt,
+	}
+
+	resp, err := client.AddInvoice(context.Background(), invoice)
+	if err != nil {
+			panic(err)
+	}
+
+	return resp.PaymentRequest, nil
+}
+
+func loadConfig() {
+  viper.SetConfigName("config") // name of config file (without extension)
+  viper.AddConfigPath("$HOME/.navybluesilver")
+  err := viper.ReadInConfig()
+  if err != nil {
+	   panic(fmt.Errorf("Fatal error config file: %s \n", err))
+  }
+  defaultTLSCertFilename  = viper.GetString("lightning.defaultTLSCertFilename")
+  defaultMacaroonFilename = viper.GetString("lightning.defaultMacaroonFilename")
+  defaultLndDir 					= viper.GetString("lightning.defaultLndDir")
+  defaultRPCServer        = viper.GetString("lightning.defaultRPCServer")
+  defaultTLSCertPath  = filepath.Join(defaultLndDir, defaultTLSCertFilename)
+	defaultMacaroonPath = filepath.Join(defaultLndDir, defaultMacaroonFilename)
+}
+
+
 func getClient() (lnrpc.LightningClient, func()) {
 	conn := getClientConn(false)
 	cleanUp := func() {
@@ -53,13 +81,14 @@ func getClient() (lnrpc.LightningClient, func()) {
 }
 
 func getClientConn(skipMacaroons bool) *grpc.ClientConn {
+  loadConfig()
 
 	// Load the specified TLS certificate and build transport credentials
 	// with it.
 	tlsCertPath := defaultTLSCertPath
 	creds, err := credentials.NewClientTLSFromFile(tlsCertPath, "")
 	if err != nil {
-		log.Fatalf("fail to dial: %v", err)
+		log.Fatalf("fail to dial: %v :%s", err, tlsCertPath)
 	}
 
 	// Create a dial options array.
@@ -71,7 +100,7 @@ func getClientConn(skipMacaroons bool) *grpc.ClientConn {
 	// if we're not skipping macaroon processing.
 	if !skipMacaroons {
 		// Load the specified macaroon file.
-		macPath := cleanAndExpandPath(defaultMacaroonPath)
+		macPath := defaultMacaroonPath
 		macBytes, err := ioutil.ReadFile(macPath)
 		if err != nil {
 			 log.Fatalf("fail to dial: %v", err)
@@ -114,24 +143,4 @@ func getClientConn(skipMacaroons bool) *grpc.ClientConn {
  		log.Fatalf("fail to dial: %v", err)
 	}
 	return conn
-}
-
-func cleanAndExpandPath(path string) string {
-	// Expand initial ~ to OS specific home directory.
-	if strings.HasPrefix(path, "~") {
-		var homeDir string
-
-		user, err := user.Current()
-		if err == nil {
-			homeDir = user.HomeDir
-		} else {
-			homeDir = os.Getenv("HOME")
-		}
-
-		path = strings.Replace(path, "~", homeDir, 1)
-	}
-
-	// NOTE: The os.ExpandEnv doesn't work with Windows-style %VARIABLE%,
-	// but the variables can still be expanded via POSIX-style $VARIABLE.
-	return filepath.Clean(os.ExpandEnv(path))
 }

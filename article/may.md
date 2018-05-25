@@ -43,8 +43,8 @@ The following financial instruments make sense when the capital has enough expos
 
 Bitcoiners can't rely on authority to bail us out. We need to manage the risks ourselves. Figure out what the value of one Bitcoin is worth to you and act accordingly. Here are some tools that can help you:
 
-* [future contracts](https://en.wikipedia.org/wiki/Futures_contract) allow you to hedge your position; during a rally the premium is usually nice and fat; this can be traded here [bitmex](https://bitmex.com)
-* [option contracts](https://en.wikipedia.org/wiki/Option_contract) allow you to gain profit when the market goes side ways or "choppy"; this can be traded here [deribit](https://deribit.com)
+* [bitmex](https://bitmex.com) offers [future contracts](https://en.wikipedia.org/wiki/Futures_contract) that allow you to hedge your position; during a rally the premium is usually nice and fat
+* [deribit](https://deribit.com) offers [option contracts](https://en.wikipedia.org/wiki/Option_contract) that allow you to gain profit when the market goes side ways or "choppy"
 
 #### Long term bull
 

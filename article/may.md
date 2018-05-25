@@ -22,7 +22,7 @@
 #### altcoins
 
 At this point in time, it looks like every altcoin took the bitcoin code and introduced security flaws.
-Read the [security threat model](https://github.com/JWWeatherman/bitcoin_security_threat_model) before buying the "next big thing".
+Read the [security threat model](https://github.com/JWWeatherman/bitcoin_security_threat_model) before buying "the next bitcoin".
 
 Below some recent examples of these security flaws being exploited:
 

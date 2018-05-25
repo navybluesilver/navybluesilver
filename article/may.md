@@ -91,7 +91,7 @@ People buy bitcoin during a bull market, because it is going up. People don't wa
 [U.S. Launches Criminal Probe into Bitcoin Price Manipulation](https://www.bloomberg.com/news/articles/2018-05-24/bitcoin-manipulation-is-said-to-be-focus-of-u-s-criminal-probe)
 
 ##### bitcoin manipulation
-Is it possible that an whale colludes with the media before he does a big dump? Yes and it should not be too surprising:
+Is it possible that a whale colludes with the media before he does a big dump? Yes and it should not be too surprising:
 
 * [Bloomberg](https://twitter.com/lowstrife/status/999567072790171650)
 * [CNBC](https://twitter.com/Excellion/status/998654498418581506)
@@ -100,7 +100,7 @@ But I don't think there is anything systemic going on, not unless I see the data
 
 The idea that the bitcoin price is being manipulated seems very unlikely to me. It is being traded on a few regulated exchanges, on hundreds of unregulated exchanges, on OTC markets including localbitcoins, bisq, paxful,... These (independent) markets are located in many different geographical locations... and somehow this is being controlled/manipulated by a handful of traders in some gigantic conspiracy. This is a bear market so the price would be manipulated to the downside... Which brings the question, why would a bitcoin whale want to reduce the value of his own assets? The incentives don't align.
 
-Bitcoin can't be "manipulated" for the same reasons that it can't be regulated. We have a free market.
+Bitcoin can't be "manipulated" for the same reasons that it can't be regulated.
 
 ##### altcoin manipulation
 It is entirely possible that the price of an altcoin is being manipulated (depending on how centralized it is). The vast majority of these coins are only being traded on a handful of exchanges.

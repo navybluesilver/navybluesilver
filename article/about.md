@@ -10,7 +10,7 @@ During my previous job I was given the opportunity to develop the following tech
 * Excellent SQL skills
 
 ## Bitcoin rabbit hole
-Recently I have decided to pursue a career that is more in line with my views:
+Recently I have decided to pursue a career that is more aligned with my views:
 
 * Politics: https://activism.net/cypherpunk/crypto-anarchy.html
 * Technology: https://bitcoin.org/bitcoin.pdf

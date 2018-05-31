@@ -86,6 +86,8 @@ People buy bitcoin during a bull market, because it is going up. People don't wa
 
 [Reserve Bank of Zimbabwe Issues Blanket Crypto Ban](https://btcmanager.com/reserve-bank-of-zimbabwe-bans-the-countrys-only-monetary-hope-bitcoin/)
 
+[Zimbabwe High Court Suspends Ban on Cryptocurrencies Set by Central Bank](http://bitcoinafrica.io/2018/05/25/zimbabwe-high-court-suspends-ban-on-cryptocurrencies-set-by-central-bank/)
+
 ### Price manipulation
 
 [U.S. Launches Criminal Probe into Bitcoin Price Manipulation](https://www.bloomberg.com/news/articles/2018-05-24/bitcoin-manipulation-is-said-to-be-focus-of-u-s-criminal-probe)

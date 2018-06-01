@@ -32,9 +32,9 @@ Since then I started dipping my toes into the open source and bitcoin ecosystem:
 Currently I am looking for a full time project:
 
 * a project that helps bitcoin become:
-  * a better store of value that cannot be confiscated with a predictable restricted supply
-  * a better medium of exchange that allows us to transact globally without intermediary, without censorship at a very low cost
-  * a better unit of account that acts as the reserve currency for the crypto currency ecosystem, provides financial inclusion for everybody and becomes more stable as it becomes more liquid
+  * a better *store of value* that cannot be confiscated with a predictable restricted supply
+  * a better *medium of exchange* that allows us to transact globally without intermediary, without censorship at a very low cost
+  * a better *unit of account* that acts as the reserve currency for the crypto currency ecosystem, provides financial inclusion for everybody and becomes more stable as it becomes more liquid
 * discounted rate if paid in bitcoin; a higher discount if the payment is done via a lightning invoice
 * working remotely if possible, but relocation can be discussed (during my previous career I was employed in more than 7 countries)
 

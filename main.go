@@ -10,6 +10,7 @@ import (
 	"strconv"
 	qrcode "github.com/skip2/go-qrcode"
 	"github.com/gomarkdown/markdown"
+	config "github.com/navybluesilver/config"
 	"github.com/navybluesilver/lightning"
 )
 
@@ -17,13 +18,15 @@ const (
 	myEmail = "navybluesilver@protonmail.ch"
 	myFingerprint = "DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C"
 	myBitcoinAddress = "3BwKJ23VEsWN9j678HE2KfU6dLEJCpHdJc"
-	port  = ":80"
+	port  = ":10443"
 	defaultDonation = 10000 //satoshis
 )
 
 var (
 	templates = template.Must(template.ParseFiles("template/about.html", "template/donate.html", "template/article.html", "template/disclaimer.html"))
 	validArticlePath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
+	certFile = config.GetString("web.certFile")
+	keyFile = config.GetString("web.keyFile")
 )
 
 type PricingPage struct {
@@ -61,7 +64,8 @@ func main() {
 	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
 
 	//listen
-	log.Fatal(http.ListenAndServe(port, nil))
+	go http.ListenAndServe(":80", http.RedirectHandler("https://localhost:10443/", 301))
+	log.Fatal(http.ListenAndServeTLS(":10443", certFile, keyFile, nil))
 }
 
 //about

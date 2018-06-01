@@ -8,7 +8,7 @@ import (
   "golang.org/x/net/context"
   "google.golang.org/grpc"
   "google.golang.org/grpc/credentials"
-  viper "github.com/spf13/viper"
+  config "github.com/navybluesilver/config"
   macaroon "gopkg.in/macaroon.v2"
   lnrpc "github.com/lightningnetwork/lnd/lnrpc"
   macaroons "github.com/lightningnetwork/lnd/macaroons"
@@ -16,12 +16,12 @@ import (
 
 
 var (
-  defaultTLSCertFilename string
-  defaultMacaroonFilename string
-  defaultLndDir string
-  defaultRPCServer string
-	defaultTLSCertPath string
-	defaultMacaroonPath string
+  defaultTLSCertFilename  = config.GetString("lightning.defaultTLSCertFilename")
+  defaultMacaroonFilename = config.GetString("lightning.defaultMacaroonFilename")
+  defaultLndDir 					= config.GetString("lightning.defaultLndDir")
+  defaultRPCServer        = config.GetString("lightning.defaultRPCServer")
+  defaultTLSCertPath  = filepath.Join(defaultLndDir, defaultTLSCertFilename)
+	defaultMacaroonPath = filepath.Join(defaultLndDir, defaultMacaroonFilename)
 )
 
 func GetInfo() (e error) {
@@ -56,22 +56,6 @@ func GetInvoice(amt int64, memo string) (string, error) {
 	return resp.PaymentRequest, nil
 }
 
-func loadConfig() {
-  viper.SetConfigName("config") // name of config file (without extension)
-  viper.AddConfigPath("$HOME/.navybluesilver")
-  err := viper.ReadInConfig()
-  if err != nil {
-	   panic(fmt.Errorf("Fatal error config file: %s \n", err))
-  }
-  defaultTLSCertFilename  = viper.GetString("lightning.defaultTLSCertFilename")
-  defaultMacaroonFilename = viper.GetString("lightning.defaultMacaroonFilename")
-  defaultLndDir 					= viper.GetString("lightning.defaultLndDir")
-  defaultRPCServer        = viper.GetString("lightning.defaultRPCServer")
-  defaultTLSCertPath  = filepath.Join(defaultLndDir, defaultTLSCertFilename)
-	defaultMacaroonPath = filepath.Join(defaultLndDir, defaultMacaroonFilename)
-}
-
-
 func getClient() (lnrpc.LightningClient, func()) {
 	conn := getClientConn(false)
 	cleanUp := func() {
@@ -81,7 +65,6 @@ func getClient() (lnrpc.LightningClient, func()) {
 }
 
 func getClientConn(skipMacaroons bool) *grpc.ClientConn {
-  loadConfig()
 
 	// Load the specified TLS certificate and build transport credentials
 	// with it.

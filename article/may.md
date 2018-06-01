@@ -19,9 +19,17 @@
 * The node count has increased from 1511 to 2044. Checkout the [LN mainnet explorer](https://lnmainnet.gaben.win/).
 * Find my LN node here: [LN donations](http://navybluesilver.net/donate).
 
+#### Layer 2: Discreet Log Contracts
+
+* This technology enables future contracts on almost any asset (including USD) settled in bitcoin (or another coin that supports segwit)
+* An oracle is used to broadcast "signatures" of the price of the asset (or index)
+* This oracle only shows the price, it does not take custody of the funds. In addition, it does not even know what the price is used for. It does not know what contracts are based on it, who has entered the contract, etc...
+* Find the details [here](https://adiabat.github.io/dlc.pdf)
+* This looks promising, it will help enable price discovery outside of centralized exchanges (removing custodial risk).
+
 #### altcoins
 
-At this point in time, it looks like every altcoin took the bitcoin code and introduced security flaws.
+It looks like most (if not all) altcoins took the bitcoin code and introduced security flaws.
 Read the [security threat model](https://github.com/JWWeatherman/bitcoin_security_threat_model) before buying "the next bitcoin".
 
 Below some recent examples of these security flaws being exploited:
@@ -29,17 +37,17 @@ Below some recent examples of these security flaws being exploited:
 * [Verge](https://www.ccn.com/privacy-coin-verge-succumbs-to-51-attack-again/)
 * [Bitcoin gold](https://www.ccn.com/bitcoin-gold-hit-by-double-spend-attack-exchanges-lose-millions/)
 
-Ethereum investors shoud read [this](https://medium.com/@StopAndDecrypt/the-ethereum-blockchain-size-has-exceeded-1tb-and-yes-its-an-issue-2b650b5f4f62).
+Ethereum investors should read [this](https://medium.com/@StopAndDecrypt/the-ethereum-blockchain-size-has-exceeded-1tb-and-yes-its-an-issue-2b650b5f4f62).
 
 ## Economics
 
 #### Short term bear
 
-As I mentioned in April, I think this is a choppy bearish market. It will remain a bear market until people who don't want to own bitcoin, stop buying bitcoin. We have to go through a period of despair first. There are two ways in which we can achieve despair. The first way is by a big drop in the price. The second way is via time, meaning a slow decline until people stop caring (similar to late 2014 or early 2015). The more likely situation in my opinion is the second one, because it is more painful. Markets are not designed to give us a free lunch. They follow the 80/20 rule. 80% of the profit goes to 20% of the people.
+We will remain a bear market until people who don't want to own bitcoin, stop buying bitcoin. We have to go through a period of despair first. There are two ways in which we can achieve despair. The first way is by a big drop in the price. The second way is via time, meaning a slow decline until people stop caring (similar to late 2014 or early 2015). The more likely situation in my opinion is the second one, because it is more painful. Markets are not designed to give us a free lunch. They follow the 80/20 rule. 80% of the profit goes to 20% of the people.
 
 #### Financial Instruments
 
-The following financial instruments make sense when the capital has enough exposure to the underlying (bitcoin). For individuals who have smaller positions, it might be better just to buy and hold (HODL). As I mentiond before, the market is not designed to give us a free lunch. The chance of a trader to outperform the market is really low.
+The following financial instruments make sense when you have enough exposure to the underlying (bitcoin). For individuals who have smaller positions, it might be better just to buy and hold (HODL). As I mentiond before, the market is not designed to give us a free lunch. The chance of a trader to outperform the market is really low.
 
 Bitcoiners can't rely on authority to bail us out. We need to manage the risks ourselves. Figure out what the value of one Bitcoin is worth to you and act accordingly. Here are some tools that can help you:
 
@@ -105,7 +113,7 @@ The idea that the bitcoin price is being manipulated seems very unlikely to me. 
 Bitcoin can't be "manipulated" for the same reasons that it can't be regulated.
 
 ##### altcoin manipulation
-It is entirely possible that the price of an altcoin is being manipulated (depending on how centralized it is). The vast majority of these coins are only being traded on a handful of exchanges.
+It is entirely possible that there is systemic maninpulation in the price of an altcoin (depending on how centralized it is). The vast majority of these coins are only being traded on a handful of exchanges.
 
 ##### fiat manipulation
 Fun fact, fiat is being manipulated by design by a selected group of individuals (Mr. Powell and friends).

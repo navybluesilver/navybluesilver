@@ -98,7 +98,7 @@ func getClientConn(skipMacaroons bool) *grpc.ClientConn {
 			// macaroon. It's good for 60 seconds by default to make up for
 			// any discrepancy between client and server clocks, but leaking
 			// the macaroon before it becomes invalid makes it possible for
-			// an attacker to reuse the macaroon. In addition, the validity
+			// an attacker to reuse the macaroon. In addition, the validty
 			// time of the macaroon is extended by the time the server clock
 			// is behind the client clock, or shortened by the time the
 			// server clock is ahead of the client clock (or invalid

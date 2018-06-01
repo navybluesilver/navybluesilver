@@ -18,7 +18,8 @@ const (
 	myEmail = "navybluesilver@protonmail.ch"
 	myFingerprint = "DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C"
 	myBitcoinAddress = "3BwKJ23VEsWN9j678HE2KfU6dLEJCpHdJc"
-	port  = ":10443"
+	portHTTPS  = ":10443"
+	portHTTP  = ":80"
 	defaultDonation = 10000 //satoshis
 )
 
@@ -27,6 +28,8 @@ var (
 	validArticlePath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
 	certFile = config.GetString("web.certFile")
 	keyFile = config.GetString("web.keyFile")
+	domain = config.GetString("web.domain")
+	homeUrl = fmt.Sprintf("https://%s%s/", domain, portHTTPS)
 )
 
 type PricingPage struct {
@@ -64,8 +67,8 @@ func main() {
 	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
 
 	//listen
-	go http.ListenAndServe(":80", http.RedirectHandler("https://localhost:10443/", 301))
-	log.Fatal(http.ListenAndServeTLS(":10443", certFile, keyFile, nil))
+	go http.ListenAndServe(portHTTP, http.RedirectHandler(homeUrl, 301))
+	log.Fatal(http.ListenAndServeTLS(portHTTPS, certFile, keyFile, nil))
 }
 
 //about

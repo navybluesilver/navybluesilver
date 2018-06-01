@@ -67,7 +67,7 @@ func main() {
 	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
 
 	//listen
-	go http.ListenAndServe(portHTTP, http.RedirectHandler(homeUrl, 301))
+	//go http.ListenAndServe(portHTTP, http.RedirectHandler(homeUrl, 301))
 	log.Fatal(http.ListenAndServeTLS(portHTTPS, certFile, keyFile, nil))
 }
 

@@ -37,8 +37,3 @@ Currently I am looking for a full time project:
   * a better *unit of account* that acts as the reserve currency for the crypto currency ecosystem, provides financial inclusion for everybody and becomes more stable as it becomes more liquid
 * discounted rate if paid in bitcoin; a higher discount if the payment is done via a lightning invoice
 * working remotely if possible, but relocation can be discussed (during my previous career I was employed in more than 7 countries)
-
-## Contact
-
-* Email: navybluesilver@protonmail.ch
-* Fingerprint: DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C

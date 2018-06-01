@@ -36,38 +36,30 @@
 <main>
 <div class="container">
   <h1>Donate</h1>
-  <div class="divider"></div><br/>
-  <div class="row">
-    <div class="col m6 s12">
-      <div style="min-height:500px;" class="section panel white">
-        <div class="container center">
-          <h5>Lightning Invoice</h5>
-          <p class="grey-text text-darken-1">Donate using a lightning invoice</p>
-          <div class="divider"></div>
-          <form action="/donate" method="post">
-              <p><img src={{.PaymentRequestPNG}}  alt="Lightning Invocie" width="200"/></p>
-              <p>Satoshis: <input type="number" name="satoshis"></p>
-              <p><input type="submit" value="Get Invoice"></p>
-              <p>Donating {{.Donation}} satoshis</p>
-              <p class="pcode"><strong>{{.PaymentRequest}}</strong></p>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="col m6 s12">
-      <div style="min-height:500px;" class="section panel white">
-        <div class="container center">
-          <h5>Bitcoin Address</h5>
-          <p class="grey-text text-darken-1">Donate using our bitcoin address.</p>
-          <div class="divider"></div>
-          <img src="/images/address.png" alt="Donation Address" width="200"/>
-          <p class="pcode"><strong>{{.DonationAddress}}</strong>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <h2>Lightning Invoice</h5>
+  <p>Donate using a lightning invoice</p>
+  <form action="/donate" method="post">
+      <p><img src={{.PaymentRequestPNG}}  alt="Lightning Payment Request" width="200"/></p>
+      <p>Payment request: <strong>{{.PaymentRequest}}</strong></p>
+      <p>Satoshis: <input type="number" name="satoshis"></p>
+      <p><input type="submit" value="Get Invoice"></p>
+      <p>Donating {{.Donation}} satoshis</p>
+  </form>
+  <hr>
+  <h2>Bitcoin Address</h5>
+  <p>Donate using our bitcoin address</p>
+  <p><img src="/images/address.png" alt="Bitcoin Public Key"  width="200"/></p>
+  <p>Public Key: <strong>{{.DonationAddress}}</strong></p>
+  <hr>
 </div>
 </main>
 </body>
+<footer>
+  <div class="container">
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:navybluesilver@protonmail.ch">navybluesilver@protonmail.ch<a/></p>
+  <p>Fingerprint: DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C</p>
+  <p>Fork me on <a href="https://github.com/navybluesilver/navybluesilver">github<a/></p>
+  </div>
+</footer>
 </html>

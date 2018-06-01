@@ -7,4 +7,21 @@ In addition, I will be sharing some of my opinions on bitcoin for educational pu
 
 
 ## generate you TLS keys via:
-go run $(go env GOROOT)/src/crypto/tls/generate_cert.go --host=localhost
+
+* install and sync bitcoind
+* install and sync lnd
+* configure and save the following configuration file $HOME/.navybluesilver/config.json
+```json                                                                                                               
+{
+  "lightning": {
+  "defaultTLSCertFilename": "tls.cert",
+  "defaultMacaroonFilename": "admin.macaroon",
+      "defaultLndDir": "/root/.lnd",
+      "defaultRPCServer": "127.0.0.1:10009"
+  },
+  "web": {
+  "certFile":"cert.pem",
+  "keyFile":"key.pem"
+  }
+}
+```

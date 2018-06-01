@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"io/ioutil"
 	"strconv"
+	"strings"
 	qrcode "github.com/skip2/go-qrcode"
 	"github.com/gomarkdown/markdown"
 	config "github.com/navybluesilver/config"
@@ -18,8 +19,7 @@ const (
 	myEmail = "navybluesilver@protonmail.ch"
 	myFingerprint = "DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C"
 	myBitcoinAddress = "3BwKJ23VEsWN9j678HE2KfU6dLEJCpHdJc"
-	portHTTPS  = ":10443"
-	portHTTP  = ":80"
+	port  = ":443"
 	defaultDonation = 10000 //satoshis
 )
 
@@ -28,8 +28,6 @@ var (
 	validArticlePath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
 	certFile = config.GetString("web.certFile")
 	keyFile = config.GetString("web.keyFile")
-	domain = config.GetString("web.domain")
-	homeUrl = fmt.Sprintf("https://%s%s/", domain, portHTTPS)
 )
 
 type PricingPage struct {
@@ -67,8 +65,22 @@ func main() {
 	http.Handle("/template/", http.StripPrefix("/template/", http.FileServer(http.Dir("template"))))
 
 	//listen
-	//go http.ListenAndServe(portHTTP, http.RedirectHandler(homeUrl, 301))
-	log.Fatal(http.ListenAndServeTLS(portHTTPS, certFile, keyFile, nil))
+	// redirect every http request to https
+	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
+	log.Fatal(http.ListenAndServeTLS(port, certFile, keyFile, nil))
+}
+
+func redirect(w http.ResponseWriter, req *http.Request) {
+    // remove/add not default ports from req.Host
+		host := strings.Split(req.Host, ":")[0]
+    target := "https://" + host + req.URL.Path
+    if len(req.URL.RawQuery) > 0 {
+        target += "?" + req.URL.RawQuery
+    }
+    log.Printf("redirect to: %s", target)
+    http.Redirect(w, req, target,
+            // see @andreiavrammsd comment: often 307 > 301
+            http.StatusTemporaryRedirect)
 }
 
 //about

@@ -19,18 +19,6 @@
 * The node count has increased from 1511 to 2044. Checkout the [LN mainnet explorer](https://lnmainnet.gaben.win/).
 * Find my LN node here: [LN donations](http://navybluesilver.net/donate).
 
-#### altcoins
-
-It looks like most (if not all) altcoins took the bitcoin code and introduced security flaws.
-Read the [security threat model](https://github.com/JWWeatherman/bitcoin_security_threat_model) before buying "the next bitcoin".
-
-Below some recent examples of these security flaws being exploited:
-
-* [Verge](https://www.ccn.com/privacy-coin-verge-succumbs-to-51-attack-again/)
-* [Bitcoin gold](https://www.ccn.com/bitcoin-gold-hit-by-double-spend-attack-exchanges-lose-millions/)
-
-Ethereum investors should read [this](https://medium.com/@StopAndDecrypt/the-ethereum-blockchain-size-has-exceeded-1tb-and-yes-its-an-issue-2b650b5f4f62).
-
 ## Economics
 
 #### Short term bear

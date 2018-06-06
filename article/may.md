@@ -10,22 +10,14 @@
 * No backdated/manual adjustments
 * 0 transactions have been censored
 * 0 bitcoins have been confiscated
-* [Low fees on the blockchain. About 5 satoshi per byte.](https://jochen-hoenicke.de/queue/#0,30d)
+* [Low fees on the blockchain. About 5 satoshi per byte.](https://jochen-hoenicke.de/queue/#1,1w)
 
 
 #### Layer 2: Lightning network
 
-* The lightning network helps bitcoin to scale off-chain and also enables some other [features](https://bitcoinmagazine.com/articles/future-bitcoin-what-lightning-could-look/).
+* The lightning network helps bitcoin to scale off-chain and also enables some other features (e.g. [Discreet Log Contracts](https://adiabat.github.io/dlc.pdf), more on that later)
 * The node count has increased from 1511 to 2044. Checkout the [LN mainnet explorer](https://lnmainnet.gaben.win/).
 * Find my LN node here: [LN donations](http://navybluesilver.net/donate).
-
-#### Layer 2: Discreet Log Contracts
-
-* This technology enables future contracts on almost any asset (including USD) settled in bitcoin (or another coin that supports segwit)
-* An oracle is used to broadcast "signatures" of the price of the asset (or index)
-* This oracle only shows the price, it does not take custody of the funds. In addition, it does not even know what the price is used for. It does not know what contracts are based on it, who has entered the contract, etc...
-* Find the details [here](https://adiabat.github.io/dlc.pdf)
-* This looks promising, it will help enable price discovery outside of centralized exchanges (removing custodial risk).
 
 #### altcoins
 

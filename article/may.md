@@ -94,8 +94,5 @@ The idea that the bitcoin price is being manipulated seems very unlikely to me. 
 
 Bitcoin can't be "manipulated" for the same reasons that it can't be regulated.
 
-##### altcoin manipulation
-It is entirely possible that there is systemic maninpulation in the price of an altcoin (depending on how centralized it is). The vast majority of these coins are only being traded on a handful of exchanges.
-
 ##### fiat manipulation
 Fun fact, fiat is being manipulated by design by a selected group of individuals (Mr. Powell and friends).

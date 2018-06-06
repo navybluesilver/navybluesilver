@@ -63,6 +63,8 @@ The vast majority of the "money" trusts (either knowingly or unknowingly) their 
 
 Note that all of the above trigger *a need for capital to protect itself against confiscation, censorship and increased supply*. Some of this is happening today, but that news has already been priced in (Venezuela/Argentina/Zimbabwe hyperinflation, India demonetization, Japan negative rates, China capital controls,...).
 
+This relates to the demand of holding bitcoin "the asset", but even this is not required for mass adoption of bitcoin. The technology (the bitcoin blockchain) will be used for *every* financial derivative (futures, options, swaps, ...) on every financial asset (stocks, commodities, fiat currencies). In addition, these derivatives can settle every second (instead of every week/month). Basically, you will be able to hold EUR, Apple stock or gold in bitcoin (*without any custodian*).
+
 #### The bright side of a bear market
 
 People buy bitcoin during a bull market, because it is going up. People don't want to buy during a bear market, because it is going down. This is perfectly normal psychological behavior. But of course if you want to buy low and sell high, you should be thinking the other way around. Here are some positive things about the bear market:

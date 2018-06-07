@@ -1,56 +1,55 @@
 package lightning
 
 import (
-  "fmt"
-  "log"
-  "path/filepath"
-  "io/ioutil"
-  "golang.org/x/net/context"
-  "google.golang.org/grpc"
-  "google.golang.org/grpc/credentials"
-  config "github.com/navybluesilver/config"
-  macaroon "gopkg.in/macaroon.v2"
-  lnrpc "github.com/lightningnetwork/lnd/lnrpc"
-  macaroons "github.com/lightningnetwork/lnd/macaroons"
+	"fmt"
+	lnrpc "github.com/lightningnetwork/lnd/lnrpc"
+	macaroons "github.com/lightningnetwork/lnd/macaroons"
+	config "github.com/navybluesilver/config"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	macaroon "gopkg.in/macaroon.v2"
+	"io/ioutil"
+	"log"
+	"path/filepath"
 )
 
-
 var (
-  defaultTLSCertFilename  = config.GetString("lightning.defaultTLSCertFilename")
-  defaultMacaroonFilename = config.GetString("lightning.defaultMacaroonFilename")
-  defaultLndDir 					= config.GetString("lightning.defaultLndDir")
-  defaultRPCServer        = config.GetString("lightning.defaultRPCServer")
-  defaultTLSCertPath  = filepath.Join(defaultLndDir, defaultTLSCertFilename)
-	defaultMacaroonPath = filepath.Join(defaultLndDir, defaultMacaroonFilename)
+	defaultTLSCertFilename  = config.GetString("lightning.defaultTLSCertFilename")
+	defaultMacaroonFilename = config.GetString("lightning.defaultMacaroonFilename")
+	defaultLndDir           = config.GetString("lightning.defaultLndDir")
+	defaultRPCServer        = config.GetString("lightning.defaultRPCServer")
+	defaultTLSCertPath      = filepath.Join(defaultLndDir, defaultTLSCertFilename)
+	defaultMacaroonPath     = filepath.Join(defaultLndDir, defaultMacaroonFilename)
 )
 
 func GetInfo() (e error) {
-  ctxb := context.Background()
-  client, cleanUp := getClient()
-  defer cleanUp()
+	ctxb := context.Background()
+	client, cleanUp := getClient()
+	defer cleanUp()
 
-  req := &lnrpc.GetInfoRequest{}
-  resp, err := client.GetInfo(ctxb, req)
+	req := &lnrpc.GetInfoRequest{}
+	resp, err := client.GetInfo(ctxb, req)
 
-  if err != nil {
-    log.Fatalf("failed to get info: %v", err)
-  }
-  fmt.Printf("%v", resp)
-  return nil
+	if err != nil {
+		log.Fatalf("failed to get info: %v", err)
+	}
+	fmt.Printf("%v", resp)
+	return nil
 }
 
 func GetInvoice(amt int64, memo string) (string, error) {
 	client, cleanUp := getClient()
 	defer cleanUp()
 
-  invoice := &lnrpc.Invoice{
-		Memo:            memo,
-		Value:           amt,
+	invoice := &lnrpc.Invoice{
+		Memo:  memo,
+		Value: amt,
 	}
 
 	resp, err := client.AddInvoice(context.Background(), invoice)
 	if err != nil {
-			panic(err)
+		panic(err)
 	}
 
 	return resp.PaymentRequest, nil
@@ -86,11 +85,11 @@ func getClientConn(skipMacaroons bool) *grpc.ClientConn {
 		macPath := defaultMacaroonPath
 		macBytes, err := ioutil.ReadFile(macPath)
 		if err != nil {
-			 log.Fatalf("fail to dial: %v", err)
+			log.Fatalf("fail to dial: %v", err)
 		}
 		mac := &macaroon.Macaroon{}
 		if err = mac.UnmarshalBinary(macBytes); err != nil {
- 			log.Fatalf("fail to dial: %v", err)
+			log.Fatalf("fail to dial: %v", err)
 		}
 
 		macConstraints := []macaroons.Constraint{
@@ -113,7 +112,7 @@ func getClientConn(skipMacaroons bool) *grpc.ClientConn {
 		// Apply constraints to the macaroon.
 		constrainedMac, err := macaroons.AddConstraints(mac, macConstraints...)
 		if err != nil {
- 			log.Fatalf("fail to dial: %v", err)
+			log.Fatalf("fail to dial: %v", err)
 		}
 
 		// Now we append the macaroon credentials to the dial options.
@@ -123,7 +122,7 @@ func getClientConn(skipMacaroons bool) *grpc.ClientConn {
 
 	conn, err := grpc.Dial(defaultRPCServer, opts...)
 	if err != nil {
- 		log.Fatalf("fail to dial: %v", err)
+		log.Fatalf("fail to dial: %v", err)
 	}
 	return conn
 }

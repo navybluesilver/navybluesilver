@@ -2,32 +2,32 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"html/template"
-	"net/http"
-	"regexp"
-	"io/ioutil"
-	"strconv"
-	"strings"
-	qrcode "github.com/skip2/go-qrcode"
 	"github.com/gomarkdown/markdown"
 	config "github.com/navybluesilver/config"
 	"github.com/navybluesilver/lightning"
+	qrcode "github.com/skip2/go-qrcode"
+	"html/template"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 const (
-	myEmail = "navybluesilver@protonmail.ch"
-	myFingerprint = "DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C"
+	myEmail          = "navybluesilver@protonmail.ch"
+	myFingerprint    = "DE0F 14CE F6C2 819E 0ADC CF85 4153 56DD 6450 053C"
 	myBitcoinAddress = "3BwKJ23VEsWN9j678HE2KfU6dLEJCpHdJc"
-	port  = ":443"
-	defaultDonation = 10000 //satoshis
+	port             = ":443"
+	defaultDonation  = 10000 //satoshis
 )
 
 var (
-	templates = template.Must(template.ParseFiles("template/about.html", "template/donate.html", "template/article.html", "template/disclaimer.html"))
+	templates        = template.Must(template.ParseFiles("template/about.html", "template/donate.html", "template/article.html", "template/disclaimer.html"))
 	validArticlePath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
-	certFile = config.GetString("web.certFile")
-	keyFile = config.GetString("web.keyFile")
+	certFile         = config.GetString("web.certFile")
+	keyFile          = config.GetString("web.keyFile")
 )
 
 type PricingPage struct {
@@ -35,16 +35,16 @@ type PricingPage struct {
 }
 
 type ArticlePage struct {
-  Title string
-  Article  template.HTML
+	Title   string
+	Article template.HTML
 }
 
 type DonatePage struct {
-	Title string
-	DonationAddress string
-	PaymentRequest string
+	Title             string
+	DonationAddress   string
+	PaymentRequest    string
 	PaymentRequestPNG string
-	Donation int64
+	Donation          int64
 }
 
 func main() {
@@ -71,34 +71,34 @@ func main() {
 }
 
 func redirect(w http.ResponseWriter, req *http.Request) {
-    // remove/add not default ports from req.Host
-		host := strings.Split(req.Host, ":")[0]
-    target := "https://" + host + req.URL.Path
-    if len(req.URL.RawQuery) > 0 {
-        target += "?" + req.URL.RawQuery
-    }
-    log.Printf("redirect to: %s", target)
-    http.Redirect(w, req, target,
-            // see @andreiavrammsd comment: often 307 > 301
-            http.StatusTemporaryRedirect)
+	// remove/add not default ports from req.Host
+	host := strings.Split(req.Host, ":")[0]
+	target := "https://" + host + req.URL.Path
+	if len(req.URL.RawQuery) > 0 {
+		target += "?" + req.URL.RawQuery
+	}
+	log.Printf("redirect to: %s", target)
+	http.Redirect(w, req, target,
+		// see @andreiavrammsd comment: often 307 > 301
+		http.StatusTemporaryRedirect)
 }
 
 //about
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
-				p, err := loadArticle("about")
-				err = templates.ExecuteTemplate(w, "about.html", p)
-        if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-        }
+	p, err := loadArticle("about")
+	err = templates.ExecuteTemplate(w, "about.html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 //pricing
 func pricingHandler(w http.ResponseWriter, r *http.Request) {
-        p := &PricingPage{Title: "Pricing" }
-				err := templates.ExecuteTemplate(w, "pricing.html", p)
-        if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-        }
+	p := &PricingPage{Title: "Pricing"}
+	err := templates.ExecuteTemplate(w, "pricing.html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 //article
@@ -114,66 +114,66 @@ func makeArticle(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 }
 
 func articleHandler(w http.ResponseWriter, r *http.Request, title string) {
-				p, err := loadArticle(title)
-				err = templates.ExecuteTemplate(w, "article.html", p)
-        if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-        }
+	p, err := loadArticle(title)
+	err = templates.ExecuteTemplate(w, "article.html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func loadArticle(title string) (*ArticlePage, error) {
 	file := fmt.Sprintf("article/%s.md", title)
 	md, err := ioutil.ReadFile(file) // just pass the file name
 	if err != nil {
-			return nil, err
+		return nil, err
 	}
 	body := markdown.ToHTML(md, nil, nil)
-	return &ArticlePage{Title: "", Article: template.HTML(body) }, nil
+	return &ArticlePage{Title: "", Article: template.HTML(body)}, nil
 }
 
 //donate
 func donateHandler(w http.ResponseWriter, r *http.Request) {
-				var paymentRequest string
-				var donation int64
+	var paymentRequest string
+	var donation int64
 
-				// load a default invoice the first time
-				if r.Method == "GET" {
-					invoice, err := lightning.GetInvoice(defaultDonation, "intial")
-					if err != nil {
-							http.Error(w, err.Error(), http.StatusInternalServerError)
-					}
-					paymentRequest = invoice
-					donation = defaultDonation
-				} else {
-				// load an invoice based on the specified donation
-		        r.ParseForm()
-						satoshis, err := strconv.ParseInt(r.Form["satoshis"][0], 10, 64)
-						if err != nil {
-						    http.Error(w, err.Error(), http.StatusInternalServerError)
-						}
-						invoice, err := lightning.GetInvoice(satoshis, "new donation")
-						if err != nil {
-								http.Error(w, err.Error(), http.StatusInternalServerError)
-						}
-						paymentRequest = invoice
-						donation = satoshis
-		    }
+	// load a default invoice the first time
+	if r.Method == "GET" {
+		invoice, err := lightning.GetInvoice(defaultDonation, "intial")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		paymentRequest = invoice
+		donation = defaultDonation
+	} else {
+		// load an invoice based on the specified donation
+		r.ParseForm()
+		satoshis, err := strconv.ParseInt(r.Form["satoshis"][0], 10, 64)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		invoice, err := lightning.GetInvoice(satoshis, "new donation")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		paymentRequest = invoice
+		donation = satoshis
+	}
 
-				png := fmt.Sprintf("/invoice/%s", paymentRequest)
-				p := &DonatePage{Title: "Donate", PaymentRequest: paymentRequest, DonationAddress: myBitcoinAddress, PaymentRequestPNG: png, Donation: donation }
-				err := templates.ExecuteTemplate(w, "donate.html", p)
-				if err != nil {
-								http.Error(w, err.Error(), http.StatusInternalServerError)
-				}
+	png := fmt.Sprintf("/invoice/%s", paymentRequest)
+	p := &DonatePage{Title: "Donate", PaymentRequest: paymentRequest, DonationAddress: myBitcoinAddress, PaymentRequestPNG: png, Donation: donation}
+	err := templates.ExecuteTemplate(w, "donate.html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 //disclaimer
 func disclaimerHandler(w http.ResponseWriter, r *http.Request) {
-				p, err := loadArticle("disclaimer")
-				err = templates.ExecuteTemplate(w, "disclaimer.html", p)
-        if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-        }
+	p, err := loadArticle("disclaimer")
+	err = templates.ExecuteTemplate(w, "disclaimer.html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 //invoice
@@ -187,7 +187,7 @@ func makeInvoice(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 func invoiceHandler(w http.ResponseWriter, r *http.Request, payment_request string) {
 	png, err := qrcode.Encode(payment_request, qrcode.Medium, 1500)
 	if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	w.Header().Set("Content-Type", "image/png")

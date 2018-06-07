@@ -13,7 +13,8 @@ In addition, I will be sharing some of my opinions on bitcoin for educational pu
 #### install and sync lnd
 [`lnd`](https://github.com/lightningnetwork/lnd)
 
-#### download and build navybluesilver
+### Installing Navy Blue Silver
+#### download and build
 ```
 $ cd $GOPATH/src/github.com/
 $ git clone https://github.com/navybluesilver/navybluesilver.git

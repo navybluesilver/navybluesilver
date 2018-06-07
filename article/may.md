@@ -4,7 +4,7 @@
 
 #### Layer 1: bitcoin blockchain
 
-* A block was generated every 10 minutes (on average) since January 9, 2009
+* A block was generated every 10 minutes (on average)
 * All the blocks comply with the [monetary policy](https://en.bitcoin.it/w/images/en/4/42/Controlled_supply-supply_over_block_height.png)
 * No double spending, debit is equal to credit
 * No backdated/manual adjustments
@@ -58,7 +58,7 @@ This relates to the demand of holding bitcoin "the asset", but even this is not 
 People buy bitcoin during a bull market, because it is going up. People don't want to buy during a bear market, because it is going down. This is perfectly normal psychological behavior. But of course if you want to buy low and sell high, you should be thinking the other way around. Here are some positive things about the bear market:
 
 * Cheaper coins!
-* Buy the rumor, sell the news; there is a rumor called the [lightning network](https://bitcoinmagazine.com/articles/future-bitcoin-what-lightning-could-look/)
+* Buy the rumor, sell the news; there is a rumor called the [lightning network](https://lightning.network/)
 * The whales are buying lambos by selling bitcoin, decentralizing the ownership of bitcoin, creating less whales
 * People are not calling bitcoin a "ponzi scheme" anymore
 * More skepticism, less media attention, more participation in development, focus on technology and eventually a return to mean
@@ -93,6 +93,3 @@ But I don't think there is anything systemic going on, not unless I see the data
 The idea that the bitcoin price is being manipulated seems very unlikely to me. It is being traded on a few regulated exchanges, on hundreds of unregulated exchanges, on OTC markets including localbitcoins, bisq, paxful,... These (independent) markets are located in many different geographical locations... and somehow this is being controlled/manipulated by a handful of traders in some gigantic conspiracy. This is a bear market so the price would be manipulated to the downside... Which brings the question, why would a bitcoin whale want to reduce the value of his own assets? The incentives don't align.
 
 Bitcoin can't be "manipulated" for the same reasons that it can't be regulated.
-
-##### fiat manipulation
-Fun fact, fiat is being manipulated by design by a selected group of individuals (Mr. Powell and friends).

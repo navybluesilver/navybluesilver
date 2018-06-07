@@ -12,7 +12,7 @@ During my previous job I was given the opportunity to develop the following tech
 ## Bitcoin rabbit hole
 Recently I have decided to pursue a career that is more aligned with my views:
 
-* Politics: https://activism.net/cypherpunk/crypto-anarchy.html
+* Politics: https://www.activism.net/cypherpunk/manifesto.html
 * Technology: https://bitcoin.org/bitcoin.pdf
 * Economics: https://www.mises.org/
 

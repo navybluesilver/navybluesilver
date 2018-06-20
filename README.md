@@ -1,4 +1,4 @@
-# navybluesilver.net
+# [navybluesilver.net](https://navybluesilver.net/donate)
 
 This website was generated as a proof of concept to help me understand the development required to accept lightning donations.
 

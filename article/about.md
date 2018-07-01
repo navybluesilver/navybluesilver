@@ -1,9 +1,12 @@
 # About
 
+## Financial Data Analyst
+Expert in how to store, transact and secure financial data.
+
 ## Traditional banking
 During my previous job I was given the opportunity to develop the following technical profile:
 
-* 7+ years of work experience as a Financial Services Senior Consultant
+* 7+ years of work experience as a Senior Consultant in Financial Services 
 * Experience with data warehousing and ETL
 * Ensuring that the product is aligned to current client needs, as well as expanding the product to meet new requirements as they occur
 * Experience with regulatory reporting, accounting and financial product control

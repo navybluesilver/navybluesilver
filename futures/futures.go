@@ -1,9 +1,9 @@
 package futures
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
 )
 
 const (
@@ -12,50 +12,49 @@ const (
 )
 
 type Tickers []struct {
-	Name         string `json:"name"`
-	Description  string `json:"description"`
-	ID           int    `json:"id"`
-	CurrentValue float64   `json:"currentValue"`
+	Name         string  `json:"name"`
+	Description  string  `json:"description"`
+	ID           int     `json:"id"`
+	CurrentValue float64 `json:"currentValue"`
 }
 
 type Futures struct {
-  Futures []Future
-  Future1Description string
-  Future2Description string
-
+	Futures            []Future
+	Future1Description string
+	Future2Description string
 }
 
 type Future struct {
-	Underlying string `json:"underlying"`
-	SPOT float64 `json:"SPOT"`
-	Future1 float64 `json:"Future1"`
-	Future2 float64 `json:"Future2"`
+	Underlying string  `json:"underlying"`
+	SPOT       float64 `json:"SPOT"`
+	Future1    float64 `json:"Future1"`
+	Future2    float64 `json:"Future2"`
 }
 
 func LoadFutures() (f Futures) {
 	t, err := getTickers()
 	handleError(err)
 
-  f.Futures = append(f.Futures, load(t, "USD"))
+	f.Futures = append(f.Futures, load(t, "USD"))
 	f.Futures = append(f.Futures, load(t, "ADA"))
 	f.Futures = append(f.Futures, load(t, "BCH"))
 	f.Futures = append(f.Futures, load(t, "EOS"))
 	f.Futures = append(f.Futures, load(t, "ETH"))
 	f.Futures = append(f.Futures, load(t, "LTC"))
 	f.Futures = append(f.Futures, load(t, "TRX"))
-  f.Futures = append(f.Futures, load(t, "XRP"))
-  f.Future1Description = future1
-  f.Future2Description = future2
-  fmt.Printf("%v\n", f)
-  return f
+	f.Futures = append(f.Futures, load(t, "XRP"))
+	f.Future1Description = future1
+	f.Future2Description = future2
+	fmt.Printf("%v\n", f)
+	return f
 }
 
 func load(t Tickers, u string) (f Future) {
-		f.Underlying = u
-		f.SPOT = loadTicker(t, u)
-		f.Future1 = loadFuture(t,u,future1)
-		f.Future2 = loadFuture(t,u,future2)
-		return f
+	f.Underlying = u
+	f.SPOT = loadTicker(t, u)
+	f.Future1 = loadFuture(t, u, future1)
+	f.Future2 = loadFuture(t, u, future2)
+	return f
 }
 
 func loadTicker(all Tickers, u string) (value float64) {
@@ -68,7 +67,7 @@ func loadTicker(all Tickers, u string) (value float64) {
 }
 
 func loadFuture(all Tickers, u string, future string) (value float64) {
-	name := fmt.Sprintf("%s%s",u,future)
+	name := fmt.Sprintf("%s%s", u, future)
 	return loadTicker(all, name)
 }
 

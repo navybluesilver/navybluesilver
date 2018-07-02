@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/gomarkdown/markdown"
 	config "github.com/navybluesilver/config"
-	"github.com/navybluesilver/lightning"
 	"github.com/navybluesilver/futures"
+	"github.com/navybluesilver/lightning"
 	qrcode "github.com/skip2/go-qrcode"
 	"html/template"
 	"io/ioutil"
@@ -29,11 +29,10 @@ var (
 	validArticlePath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
 	certFile         = config.GetString("web.certFile")
 	keyFile          = config.GetString("web.keyFile")
-	fmap = template.FuncMap{
-    "formatAsSatoshi": formatAsSatoshi,
-  }
+	fmap             = template.FuncMap{
+		"formatAsSatoshi": formatAsSatoshi,
+	}
 )
-
 
 type PricingPage struct {
 	Title string

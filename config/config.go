@@ -7,7 +7,7 @@ import (
 
 func GetString(config string) (s string) {
 	viper.SetConfigName("config") // name of config file (without extension)
-	viper.AddConfigPath("$HOME/.navybluesilver")
+	viper.AddConfigPath("/home/navybluesilver/.navybluesilver")
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))

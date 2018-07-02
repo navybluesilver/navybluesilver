@@ -7,6 +7,7 @@
 | Censorship resistance | C             | D             | C             | A+            |
 | Non-counterfeiting    | B             | B             | A             | A+            |
 | Fungible              | F             | B             | A+            | B             |
-| Programmable          | F             | C             | F             | A+            |
+| Programmable          | F             | D             | F             | A+            |
 | Scarcity              | D             | F             | A             | A+            |
 | History               | F             | C             | A+            | D             |  
+| Proof of ownership    | B             | D             | B             | A+            |

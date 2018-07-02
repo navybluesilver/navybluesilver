@@ -5,6 +5,7 @@ import (
 	"github.com/gomarkdown/markdown"
 	config "github.com/navybluesilver/config"
 	"github.com/navybluesilver/lightning"
+	"github.com/navybluesilver/futures"
 	qrcode "github.com/skip2/go-qrcode"
 	"html/template"
 	"io/ioutil"
@@ -28,7 +29,11 @@ var (
 	validArticlePath = regexp.MustCompile("^/(article)/([a-zA-Z0-9]+)$")
 	certFile         = config.GetString("web.certFile")
 	keyFile          = config.GetString("web.keyFile")
+	fmap = template.FuncMap{
+    "formatAsSatoshi": formatAsSatoshi,
+  }
 )
+
 
 type PricingPage struct {
 	Title string
@@ -56,6 +61,7 @@ func main() {
 	http.HandleFunc("/article/", makeArticle(articleHandler))
 	http.HandleFunc("/donate", donateHandler)
 	http.HandleFunc("/disclaimer", disclaimerHandler)
+	http.HandleFunc("/futures", futuresHandler)
 
 	//invoice
 	http.HandleFunc("/invoice/", makeInvoice(invoiceHandler))
@@ -87,6 +93,15 @@ func redirect(w http.ResponseWriter, req *http.Request) {
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
 	p, err := loadArticle("about")
 	err = templates.ExecuteTemplate(w, "about.html", p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+//futures
+func futuresHandler(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.New("futures.html").Funcs(fmap).ParseFiles("template/futures.html"))
+	err := t.ExecuteTemplate(w, "futures.html", futures.LoadFutures())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -196,4 +211,11 @@ func invoiceHandler(w http.ResponseWriter, r *http.Request, payment_request stri
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func formatAsSatoshi(satoshi float64) (string, error) {
+	if satoshi == 0 {
+		return "", nil
+	}
+	return fmt.Sprintf("%.0f", satoshi), nil
 }

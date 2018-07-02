@@ -31,7 +31,7 @@ It enables:
 * An authority (the oracle) is (only) trusted to communicate the correct price
 * No custodial risk, no centralized exchange that can get hacked
 * Scalability using HTLC (similar scaling as lightning)
-* The two counterparties in the contract don't have to trust each other
+* The two counterparties in the contract don't have to trust each other, no counterparty risk
 * The oracle does not need to be aware of the contract (privacy)
 
 ## Economics

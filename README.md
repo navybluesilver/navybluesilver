@@ -44,3 +44,8 @@ $ nano /home/navybluesilver/.navybluesilver/config.json
 #### certificates
 * Generate TLS certificates (e.g. by using [letsencrypt](https://letsencrypt.org/))
 * Copy TLS and .lnd certificates to /home/navybluesilver/.navybluesilver/
+
+#### Grand TCP access to binary
+```
+sudo setcap CAP_NET_BIND_SERVICE=+eip $GOPATH/src/github.com/navybluesilver/navybluesilver
+```

@@ -6,6 +6,7 @@ import (
 	config "github.com/navybluesilver/config"
 	"github.com/navybluesilver/futures"
 	"github.com/navybluesilver/lightning"
+	"github.com/navybluesilver/lit"
 	qrcode "github.com/skip2/go-qrcode"
 	"html/template"
 	"io/ioutil"
@@ -51,6 +52,11 @@ type DonatePage struct {
 	Donation          int64
 }
 
+type OrderbookPage struct {
+	Bids interface{}
+	Asks interface{}
+}
+
 func main() {
 	//default
 	http.HandleFunc("/", aboutHandler)
@@ -64,6 +70,9 @@ func main() {
 
 	//invoice
 	http.HandleFunc("/invoice/", makeInvoice(invoiceHandler))
+
+	//orderbook
+	http.HandleFunc("/futures/orderbook", orderbookHandler)
 
 	//files
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
@@ -100,7 +109,7 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 //futures
 func futuresHandler(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.New("futures.html").Funcs(fmap).ParseFiles("template/futures.html"))
-	err := t.ExecuteTemplate(w, "futures.html", futures.LoadFutures())
+	err := t.ExecuteTemplate(w, "futures.html", futures.GetAllProducts())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -144,6 +153,20 @@ func loadArticle(title string) (*ArticlePage, error) {
 	body := markdown.ToHTML(md, nil, nil)
 	return &ArticlePage{Title: "", Article: template.HTML(body)}, nil
 }
+
+//orderbook
+func orderbookHandler(w http.ResponseWriter, r *http.Request) {
+	var o OrderbookPage
+	o.Bids = lit.GetBids()
+	o.Asks = lit.GetAsks()
+
+	t := template.Must(template.New("orderbook.html").Funcs(fmap).ParseFiles("template/orderbook.html"))
+	err := t.ExecuteTemplate(w, "orderbook.html", o)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 
 //donate
 func donateHandler(w http.ResponseWriter, r *http.Request) {

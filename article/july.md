@@ -21,3 +21,7 @@
 ## Economics
 
 [Bitcoin: we don't expect new highs in 2018](https://medium.com/@tuurdemeester/bitcoin-we-dont-expect-new-highs-in-2018-97e6a7a385f7)
+
+## Geopolitics
+
+[Visions of Bitcoin](https://medium.com/@nic__carter/visions-of-bitcoin-4b7b7cbcd24c)
